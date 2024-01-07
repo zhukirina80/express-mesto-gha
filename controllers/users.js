@@ -27,7 +27,7 @@ const createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR_CODE).send({ message: 'Переданы некорректные данные' });
       }
       return res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'Ошибка на стороне сервера' });
@@ -44,7 +44,7 @@ const updateUser = (req, res) => {
     .orFail(() => new Error('NotFoundError'))
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR_CODE).send({ message: 'Переданы некорректные данные' });
       }
       if (err.message === 'NotFoundError') {
