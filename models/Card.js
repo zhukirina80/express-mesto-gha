@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const cardSchema = new mongoose.Schema(
   {
@@ -8,11 +9,14 @@ const cardSchema = new mongoose.Schema(
         value: true,
         message: 'Поле является обязательным',
       },
-      minlength: [2, 'Минимальная длина — 2 символа'],
-      maxlength: [30, 'Максимальная длина — 30 символов'],
     },
     link: {
       type: String,
+      validate: {
+        // eslint-disable-next-line no-useless-escape
+        validator: (v) => validator.isURL(v) && /((http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-]))/.test(v),
+        message: 'Некорректный URL',
+      },
       required: {
         value: true,
         message: 'Поле является обязательным',

@@ -1,21 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const { router } = require('./routes');
+const auth = require('./middlewares/auth');
+const serverError = require('./middlewares/serverError');
+const { validationUser } = require('./middlewares/validation');
+const {
+  createUser, login,
+} = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+app.use(helmet());
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '659937d9092e2f31fcca9222',
-  };
-  next();
-});
+app.post('/signin', validationUser, login);
+
+app.post('/signup', validationUser, createUser);
+
+app.use(auth);
 
 app.use(router);
+
+app.use(errors());
+
+app.use(serverError);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
