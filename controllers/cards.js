@@ -11,7 +11,7 @@ const getCards = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
-    .orFail(() => new Error('NotFoundError'))
+    .orFail(() => new NotFoundError('Карточка по указанному Id не найдена'))
     .then(({ owner }) => {
       if (owner.toString() === req.user._id) {
         Card.findOneAndDelete(req.params.cardId)
@@ -24,8 +24,6 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные для удаления карточки'));
-      } else if (err.message === 'NotFoundError') {
-        next(new NotFoundError('Карточка по указанному Id не найдена'));
       } else {
         next(err);
       }
@@ -33,8 +31,7 @@ const deleteCard = (req, res, next) => {
 };
 
 const createCard = (req, res, next) => {
-  const { name } = req.body;
-  const { link } = req.body;
+  const { name, link } = req.body;
   const owner = req.user._id;
 
   Card.create({ name, link, owner })

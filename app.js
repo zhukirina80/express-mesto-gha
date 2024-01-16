@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
-const bodyParser = require('body-parser');
 const { router } = require('./routes');
 const auth = require('./middlewares/auth');
 const serverError = require('./middlewares/serverError');
@@ -15,8 +14,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(helmet());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.post('/signin', validationUser, login);
 

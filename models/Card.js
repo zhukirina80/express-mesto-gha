@@ -9,6 +9,8 @@ const cardSchema = new mongoose.Schema(
         value: true,
         message: 'Поле является обязательным',
       },
+      minlength: [2, 'Минимальная длина имени — 2 символа'],
+      maxlength: [30, 'Максимальная длина имени — 30 символов'],
     },
     link: {
       type: String,
@@ -24,10 +26,12 @@ const cardSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Types.ObjectId,
+      ref: 'user',
       required: true,
     },
     likes: [{
       type: mongoose.Types.ObjectId,
+      ref: 'user',
       default: {},
     }],
     createdAt: {

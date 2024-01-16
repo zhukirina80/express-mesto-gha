@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const validationUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
@@ -18,7 +18,7 @@ const validationGetRequest = celebrate({
 
 const validationGetUserById = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24),
+    userId: Joi.string().hex().alphanum().length(24),
   }),
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
@@ -56,7 +56,7 @@ const validationCreateCard = celebrate({
 
 const validationCardId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
+    cardId: Joi.string().hex().alphanum().length(24),
   }),
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
