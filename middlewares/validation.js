@@ -47,7 +47,7 @@ const validationUpdateAvatar = celebrate({
 const validationCreateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().uri({ scheme: ['http', 'https'] }),
+    link: Joi.string().required().uri({ scheme: ['http', 'https'] }),
   }),
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
