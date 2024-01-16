@@ -68,7 +68,9 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      if (err.name === 'JsonWebTokenError') {
+      if (err.message === 'Неправильные почта или пароль') {
+        next(new UnauthorizedError('Неправильные почта или пароль'));
+      } else if (err.name === 'JsonWebTokenError') {
         next(new UnauthorizedError('С токеном что-то не так'));
       } else {
         next(err);

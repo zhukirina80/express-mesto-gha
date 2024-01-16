@@ -6,7 +6,7 @@ const validationUser = celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2),
+    avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
   }),
 });
 
@@ -37,7 +37,7 @@ const validationUpdateUser = celebrate({
 
 const validationUpdateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().min(2),
+    avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
   }),
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
@@ -47,7 +47,7 @@ const validationUpdateAvatar = celebrate({
 const validationCreateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().min(2),
+    link: Joi.string().uri({ scheme: ['http', 'https'] }),
   }),
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
